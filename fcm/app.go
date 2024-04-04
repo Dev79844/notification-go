@@ -7,7 +7,7 @@ import (
 	firebase "firebase.google.com/go/v4"
 	"github.com/Dev79844/email-fcm-package/config"
 	"google.golang.org/api/option"
-	"firebase.google.com/go/messaging"
+	"firebase.google.com/go/v4/messaging"
 )
 
 type FCMMessenger struct{
@@ -46,7 +46,7 @@ func (m *FCMMessenger) SendMessage() error {
 	if err != nil {
 		return err
 	}
-	
+
 	fmt.Println("Successfully sent message:", response)
 	return nil
 }
