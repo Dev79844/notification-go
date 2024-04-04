@@ -8,17 +8,18 @@ import (
 )
 
 type smtpSender struct {
-	config config.EmailSenderConfig
+	config 		config.EmailSenderConfig
+	to 	 		[]string
+	body 		string
 }
 
-func NewSMTPSender(config config.EmailSenderConfig) Sender {
+func NewSMTPSender(config config.EmailSenderConfig) *smtpSender {
 	return &smtpSender{config: config}
 }
  
-func (s *smtpSender) SendEmail(to []string, subject, body string) error {
+func (s *smtpSender) SendMessage() error {
 
 	auth := smtp.PlainAuth("", s.config.Username, s.config.Password, s.config.Password)
-	msg := []byte("Hello there!!!")
 
-	return smtp.SendMail(s.config.Host+":"+strconv.Itoa(s.config.Port), auth, s.config.From, to, msg)
+	return smtp.SendMail(s.config.Host+":"+strconv.Itoa(s.config.Port), auth, s.config.From, s.to, []byte(s.body))
 }

@@ -2,6 +2,7 @@ package fcm
 
 import (
 	"context"
+	"fmt"
 
 	firebase "firebase.google.com/go/v4"
 	"github.com/Dev79844/email-fcm-package/config"
@@ -10,10 +11,10 @@ import (
 )
 
 type FCMMessenger struct{
-	config config.FCMSenderConfig
-	message string
-	app		*firebase.App
-	client 	*messaging.Client
+	Config config.FCMSenderConfig
+	Message string
+	App		*firebase.App
+	Client 	*messaging.Client
 }
 
 func NewFCMMessenger(config config.FCMSenderConfig) (*FCMMessenger, error) {
@@ -29,9 +30,25 @@ func NewFCMMessenger(config config.FCMSenderConfig) (*FCMMessenger, error) {
 	}
 
 	return &FCMMessenger{
-		config: config,
-		app: app,
-		client: client,
+		Config: config,
+		App: app,
+		Client: client,
 	}, nil
 }
+
+func (m *FCMMessenger) SendMessage() error {
+	response, err := m.Client.Send(context.Background(), &messaging.Message{
+		Data: map[string]string{
+			"message": m.Message,
+		},
+		Topic: m.Config.Topic,
+	})
+	if err != nil {
+		return err
+	}
+	
+	fmt.Println("Successfully sent message:", response)
+	return nil
+}
+
 
