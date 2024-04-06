@@ -15,7 +15,7 @@ type smtpSender struct {
 }
 
 func NewSMTPSender(config config.EmailSenderConfig) *smtpSender {
-	auth := smtp.PlainAuth("", config.Username, config.Password, config.Password)
+	auth := smtp.PlainAuth("", config.Username, config.Password, config.Host)
 	return &smtpSender{
 		config: config,
 		auth: auth,
