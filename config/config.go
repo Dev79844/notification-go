@@ -11,9 +11,12 @@ type EmailSenderConfig struct {
 	Username string
 	Password string
 	From     string
+	To		 []string
+	Body 	 string
 }
 
 type FCMSenderConfig struct {
     ServerKey string
 	Topic     string
+	Message	  string
 }

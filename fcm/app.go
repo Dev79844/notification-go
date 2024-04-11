@@ -12,13 +12,12 @@ import (
 
 type FCMMessenger struct{
 	Config config.FCMSenderConfig
-	Message string
 	App		*firebase.App
 	Client 	*messaging.Client
 }
 
 func NewFCMMessenger(config config.FCMSenderConfig) (*FCMMessenger, error) {
-	opt := option.WithCredentialsFile("serviceAccountKey.json")
+	opt := option.WithCredentialsFile(config.ServerKey)
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		return nil, err
@@ -39,7 +38,7 @@ func NewFCMMessenger(config config.FCMSenderConfig) (*FCMMessenger, error) {
 func (m *FCMMessenger) SendMessage() error {
 	response, err := m.Client.Send(context.Background(), &messaging.Message{
 		Data: map[string]string{
-			"message": m.Message,
+			"message": m.Config.Message,
 		},
 		Topic: m.Config.Topic,
 	})
